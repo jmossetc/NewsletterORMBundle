@@ -1,0 +1,3 @@
+bayard_newsletter_orm_homepage:
+    path:     /
+    defaults: { _controller: BayardNewsletterORMBundle:Default:index }
