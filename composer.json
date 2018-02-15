@@ -1,5 +1,5 @@
 {
-    "name" : "Bayard/NewsletterORMBundle",
+    "name" : "bayard/newsletter-orm-bundle",
     "description" : "A symfony bundle used for newsletters related entities on la-croix projects ",
     "type" : "symfony-bundle",
     "authors" : [{
