@@ -1,0 +1,23 @@
+{
+    "name" : "bayard/newsletter-orm",
+    "description" : "A symfony bundle used for newsletters related entities on la-croix projects ",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Jérémie Mosset-Chafik",
+        "email" : "jeremie.mosset-chafik@bayard-presse.com"
+    }],
+    "keywords" : [
+        "newsletter database bundle"
+    ],
+    "license" : [
+        "proprietary"
+    ],
+    "require" : {
+    },
+    "autoload" : {
+        "psr-4" : {
+            "Bayard\\NewsletterORMBundle" : "src/Bayard/NewsletterORMBundle"
+        }
+    },
+    "target-dir" : "Bayard/NewsletterORMBundle"
+}
