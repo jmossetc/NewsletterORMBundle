@@ -18,6 +18,5 @@
         "psr-4" : {
             "Bayard\\NewsletterORMBundle" : "src/Bayard/NewsletterORMBundle"
         }
-    },
-    "target-dir" : "Bayard/NewsletterORMBundle"
+    }
 }
