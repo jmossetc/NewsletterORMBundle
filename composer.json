@@ -22,7 +22,7 @@
     },
     "autoload" : {
         "psr-4" : {
-            "Bayard\\NewsletterORMBundle\\" : "src/Bayard/NewsletterORMBundle"
+            "Bayard\\NewsletterORMBundle\\" : ""
         }
     }
 }
