@@ -160,4 +160,29 @@ class Newsletter
     {
         return $this->newsletterType;
     }
+
+    /**
+     * Set enabled
+     *
+     * @param string $xmlLocation
+     *
+     * @return Newsletter
+     */
+    public function setEnabled($isEnabled)
+    {
+        $this->enabled = $isEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
 }
