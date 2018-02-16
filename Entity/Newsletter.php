@@ -48,6 +48,12 @@ class Newsletter
      */
     private $newsletterType;
 
+    /**
+     * @var boolean
+     * @ORM\Column(name="enabled", type="boolean", options={"default" = true})
+     */
+    private $enabled;
+
 
     /**
      * Get id
