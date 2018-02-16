@@ -18,7 +18,7 @@
         "php": ">=5.5.9",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
-        "symfony/symfony": "3.4.*"
+        "symfony/symfony": "*"
     },
     "autoload" : {
         "psr-4" : {
