@@ -4,19 +4,26 @@
     "type" : "symfony-bundle",
     "authors" : [{
         "name" : "Jérémie Mosset-Chafik",
-        "email" : "jeremie.mosset-chafik@bayard-presse.com"
+        "email" : "jeremie.mosset-chafik@bayard-presse.com",
+        "role" : "developer"
     }],
     "keywords" : [
-        "newsletter database bundle"
+        "newsletter",
+        "database"
     ],
     "license" : [
         "proprietary"
     ],
     "require" : {
+        "php": ">=5.5.9",
+        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/orm": "^2.5",
+        "doctrine/orm": "^2.5",
+        "symfony/symfony": "3.4.*"
     },
     "autoload" : {
         "psr-4" : {
-            "" : "src/"
+            "Bayard\\NewsletterORMBundle\\" : "src/"
         }
     }
 }
