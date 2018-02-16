@@ -24,10 +24,6 @@
     "autoload" : {
         "psr-4" : {
             "Bayard\\NewsletterORMBundle\\" : "src/Bayard/NewsletterORMBundle"
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
+        }
     }
 }
