@@ -13,10 +13,17 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class NewsletterRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * @var string
+     */
+    protected $alias = 'newsletter';
+
+
     public function getNewsletters($page, $numberPerPage)
     {
         $query = $this->createQueryBuilder('n')
-            ->leftJoin('n.newsletter_type_id', 't')
+            ->leftJoin('n.newsletterType', 't')
             ->addSelect('n')
             ->orderBy('dispatchDate', 'DESC')
             ->getQuery();
