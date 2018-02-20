@@ -25,7 +25,6 @@ class NewsletterRepository extends EntityRepository
         $query = $this->createQueryBuilder('n')
             ->leftJoin('n.newsletterType', 't')
             ->addSelect('n')
-            ->orderBy('n.dispatchDate', 'DESC')
             ->getQuery();
 
         $query->setFirstResult(($page - 1) * $numberPerPage)
