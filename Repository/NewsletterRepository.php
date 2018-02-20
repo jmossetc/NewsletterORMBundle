@@ -19,7 +19,11 @@ class NewsletterRepository extends EntityRepository
      */
     protected $alias = 'newsletter';
 
-
+    /**
+     * @param $page
+     * @param $numberPerPage
+     * @return Paginator
+     */
     public function getNewsletters($page, $numberPerPage)
     {
         $query = $this->createQueryBuilder('n')
