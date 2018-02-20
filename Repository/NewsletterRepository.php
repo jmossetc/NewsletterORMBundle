@@ -2,6 +2,9 @@
 
 namespace Bayard\NewsletterORMBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * NewsletterRepository
  *
@@ -10,5 +13,18 @@ namespace Bayard\NewsletterORMBundle\Repository;
  */
 class NewsletterRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getNewsletters($page, $numberPerPage)
+    {
+        $query = $this->createQueryBuilder('n')
+            ->leftJoin('n.newsletter_type_id', 't')
+            ->addSelect('n')
+            ->orderBy('dispatchDate', 'DESC')
+            ->getQuery();
 
+        $query->setFirstResult(($page - 1) * $numberPerPage)
+            ->setMaxResults($numberPerPage);
+
+        return new Paginator($query, true);
+
+    }
 }
