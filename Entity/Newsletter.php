@@ -24,6 +24,13 @@ class Newsletter
     /**
      * @var string
      *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="xml_location", type="string", length=255)
      */
     private $xmlLocation;
@@ -34,6 +41,13 @@ class Newsletter
      * @ORM\Column(name="html_location", type="string", length=255)
      */
     private $htmlLocation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="text_location", type="string", length=255)
+     */
+    private $textLocation;
 
     /**
      * @var \DateTime
@@ -50,9 +64,9 @@ class Newsletter
 
     /**
      * @var boolean
-     * @ORM\Column(name="enabled", type="boolean", options={"default" = true})
+     * @ORM\Column(name="status", type="string", columnDefinition="ENUM('sent', 'abandonned', 'building', 'received', 'programmed')")
      */
-    private $enabled;
+    private $status;
 
 
     /**
@@ -63,6 +77,30 @@ class Newsletter
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Newsletter
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     /**
@@ -104,6 +142,29 @@ class Newsletter
     }
 
     /**
+     * Get textLocation
+     *
+     * @return string
+     */
+    public function getTextLocation()
+    {
+        return $this->textLocation;
+    }
+    /**
+     * Set textLocation
+     *
+     * @param string $textLocation
+     *
+     * @return Newsletter
+     */
+    public function setTextLocation($textLocation)
+    {
+        $this->textLocation = $textLocation;
+
+        return $this;
+    }
+
+    /**
      * Get htmlLocation
      *
      * @return string
@@ -112,6 +173,7 @@ class Newsletter
     {
         return $this->htmlLocation;
     }
+
 
     /**
      * Set dispatchDate
@@ -162,27 +224,27 @@ class Newsletter
     }
 
     /**
-     * Set enabled
+     * Set status
      *
      * @param string $xmlLocation
      *
      * @return Newsletter
      */
-    public function setEnabled($isEnabled)
+    public function setStatus($status)
     {
-        $this->enabled = $isEnabled;
+        $this->status = $status;
 
         return $this;
     }
 
     /**
-     * Get enabled
+     * Get status
      *
      * @return boolean
      */
-    public function getEnabled()
+    public function getStatus()
     {
-        return $this->enabled;
+        return $this->status;
     }
 
 }
