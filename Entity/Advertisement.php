@@ -50,9 +50,9 @@ class Advertisement
     private $fileName;
 
     /**
-     * @var string
+     * @var boolean
      *
-     * @ORM\Column(name="enabled", type="string", length =255)
+     * @ORM\Column(name="enabled", type="boolean")
      */
     private $enabled;
 
