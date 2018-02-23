@@ -2,6 +2,7 @@
 
 namespace Bayard\NewsletterORMBundle\Entity;
 
+use Bayard\NewsletterORMBundle\Entity\NewsletterType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -206,7 +207,7 @@ class Newsletter
      *
      * @return Newsletter
      */
-    public function setNewsletterType(\Bayard\NewsletterORMBundle\Entity\NewsletterType $newsletterType = null)
+    public function setNewsletterType(NewsletterType $newsletterType = null)
     {
         $this->newsletterType = $newsletterType;
 
