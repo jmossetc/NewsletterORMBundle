@@ -11,7 +11,7 @@ namespace Bayard\NewsletterORMBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 
 
-class AdvertisementDate
+class AdvertisementDateRepository
 {
 
 }
