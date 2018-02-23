@@ -40,6 +40,12 @@ class AdvertisementDate
     private $endDate;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Advertisement")
+     * @ORM\JoinColumn(name="advertisement_id", referencedColumnName="id")
+     */
+    private $advertisement;
+
+    /**
      * Get id
      *
      * @return int
@@ -88,5 +94,24 @@ class AdvertisementDate
         $this->endDate = $date;
 
         return $this;
+    }
+
+    /**
+     * @param Advertisement $ad
+     * @return $this
+     */
+    public function setAdvertisement(Advertisement $ad)
+    {
+        $this->advertisement = $ad;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNewsletterType()
+    {
+        return $this->advertisement;
     }
 }
