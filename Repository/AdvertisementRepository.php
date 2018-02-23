@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 
-class NewsletterRepository extends EntityRepository
+class AdvertisementRepository extends EntityRepository
 {
 
     /**
