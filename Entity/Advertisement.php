@@ -10,6 +10,8 @@ namespace Bayard\NewsletterORMBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Bayard\NewsletterORMBundle\Entity\NewsletterType;
+use Bayard\NewsletterORMBundle\Entity\AdvertisementDate;
+
 
 /**
  * Advertisement
@@ -65,6 +67,13 @@ class Advertisement
      *      )
      */
     private $newsletterTypes;
+
+    /**
+     * @var
+     *
+     * @ORM\OneToMany(targetEntity="AdvertismentDate")
+     */
+    private $dates;
 
     /**
      * Get id
@@ -166,7 +175,7 @@ class Advertisement
     }
 
     /**
-     * Set newsletterType
+     * add newsletterType
      *
      * @param NewsletterType $newsletterType
      *
@@ -194,6 +203,31 @@ class Advertisement
     public function getNewsletterTypes()
     {
         return $this->newsletterTypes;
+    }
+
+    /**
+     * get dates
+     *
+     * @return mixed
+     */
+    public function getDates(){
+        return $this->dates;
+    }
+
+    /**
+     * add date
+     * @param \Bayard\NewsletterORMBundle\Entity\AdvertisementDate $date
+     */
+    public function addDate(AdvertisementDate $date){
+        $this->dates[] = $date;
+    }
+
+    /**
+     * remove date
+     * @param \Bayard\NewsletterORMBundle\Entity\AdvertisementDate $date
+     */
+    public function removeDate(AdvertisementDate $date){
+        $this->dates->removeElement($date);
     }
 
 }
