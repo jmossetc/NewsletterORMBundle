@@ -71,7 +71,7 @@ class Advertisement
     /**
      * @var
      *
-     * @ORM\OneToMany(targetEntity="AdvertismentDate")
+     * @ORM\OneToMany(targetEntity="AdvertismentDate", mappedBy="advertisement")
      */
     private $dates;
 
