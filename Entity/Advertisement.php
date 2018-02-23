@@ -76,6 +76,24 @@ class Advertisement
     private $dates;
 
     /**
+     * @var
+     * @ORM\Column(name="redirect_url", type="string", length=255)
+     */
+    private $redirectURL;
+
+    /**
+     * @var
+     * @ORM\Column(name="type", type="string", length=255, columnDefinition="ENUM('partner', 'autopromo')")
+     */
+    private $type;
+
+    /**
+     * @var
+     * @ORM\Column(name="redirect_url", type="smallint")
+     */
+    private $position;
+
+    /**
      * Get id
      *
      * @return int
@@ -229,5 +247,54 @@ class Advertisement
     public function removeDate(AdvertisementDate $date){
         $this->dates->removeElement($date);
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getRedirectURL(){
+        return $this->redirectURL;
+    }
+    /**
+     * @param $url
+     * @return $this
+     */
+    public function setRedirectURL($url){
+        $this->redirectURL = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType(){
+        return $this->type;
+    }
+    /**
+     * @param $type
+     * @return $this
+     */
+    public function setType($type){
+        $this->type = $type;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getPosition(){
+        return $this->position;
+    }
+    /**
+     * @param $pos
+     * @return $this
+     */
+    public function setPosition($pos){
+        $this->position = $pos;
+
+        return $this;
+    }
+
 
 }
