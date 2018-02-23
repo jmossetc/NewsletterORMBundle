@@ -58,10 +58,10 @@ class Advertisement
 
     /**
      * @var
-     * @ManyToMany(targetEntity="NewsletterType", cascade={"persist"})
-     * @JoinTable(name="advertisement_newsletter_type",
-     *      joinColumns={@JoinColumn(name="advertisement_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="group_id", referencedColumnName="id")}
+     * @ORM\ManyToMany(targetEntity="NewsletterType", cascade={"persist"})
+     * @ORM\JoinTable(name="advertisement_newsletter_type",
+     *      joinColumns={@ORM\JoinColumn(name="advertisement_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
      *      )
      */
     private $newsletterTypes;
