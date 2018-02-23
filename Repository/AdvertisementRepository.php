@@ -23,7 +23,9 @@ class AdvertisementRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('a')
             ->leftJoin('a.newsletterTypes', 'nt')
+            ->leftJoin('a.dates', 'd')
             ->addSelect('nt')
+            ->addSelect('d')
             ->getQuery();
 
         $query->setFirstResult(($page - 1) * $numberPerPage)
