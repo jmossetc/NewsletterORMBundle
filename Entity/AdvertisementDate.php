@@ -40,7 +40,7 @@ class AdvertisementDate
     private $endDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Advertisement")
+     * @ORM\ManyToOne(targetEntity="Advertisement", inversedBy="dates")
      * @ORM\JoinColumn(name="advertisement_id", referencedColumnName="id")
      */
     private $advertisement;
