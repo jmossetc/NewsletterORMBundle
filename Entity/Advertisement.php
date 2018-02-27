@@ -238,7 +238,10 @@ class Advertisement
      * @param \Bayard\NewsletterORMBundle\Entity\AdvertisementDate $date
      */
     public function addDate(AdvertisementDate $date){
+        $date->setAdvertisement($this);
         $this->dates[] = $date;
+
+        return $this;
     }
 
     /**
