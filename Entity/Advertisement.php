@@ -48,8 +48,12 @@ class Advertisement
      * @var string
      *
      * @ORM\Column(name="file_name", type="string", length =255)
+     *
+     * @Assert\NotBlank(message="Veuillez uploader une image au format jpeg ou png")
+     * @Assert\File(mimeTypes={"image/jpeg", "image/png"})
      */
     private $fileName;
+
 
     /**
      * @var boolean
@@ -71,7 +75,7 @@ class Advertisement
     /**
      * @var
      *
-     * @ORM\OneToMany(targetEntity="AdvertisementDate", mappedBy="advertisement")
+     * @ORM\OneToMany(targetEntity="AdvertisementDate", mappedBy="advertisement", cascade={"persist"})
      */
     private $dates;
 
