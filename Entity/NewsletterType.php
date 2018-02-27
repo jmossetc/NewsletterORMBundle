@@ -28,6 +28,13 @@ class NewsletterType
      */
     private $name;
 
+    /**
+     * @var
+     *
+     * @ORM\ManyToMany(targetEntity="Advertisement", mappedBy="newsletterTypes")
+     */
+    private $advertisements;
+
 
     /**
      * Get id
@@ -63,6 +70,16 @@ class NewsletterType
         return $this->name;
     }
 
+    public function removeAdvertisement(Advertisement $ad){
+        if($this->advertisements->contains($ad)){
+            $this->advertisements->removeElement($ad);
+            $ad->removeNewsletterType($this);
+        }
+        else{
+            return;
+        }
+    }
+
     /**
      * @return string
      */
@@ -70,5 +87,6 @@ class NewsletterType
     {
         return $this->name;
     }
+
 }
 

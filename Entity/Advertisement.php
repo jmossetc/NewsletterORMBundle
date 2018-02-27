@@ -61,7 +61,7 @@ class Advertisement
 
     /**
      * @var
-     * @ORM\ManyToMany(targetEntity="NewsletterType", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="NewsletterType", inversedBy="advertisements", cascade={"persist"})
      * @ORM\JoinTable(name="advertisement_newsletter_type",
      *      joinColumns={@ORM\JoinColumn(name="advertisement_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
@@ -212,7 +212,13 @@ class Advertisement
      * @param \Bayard\NewsletterORMBundle\Entity\NewsletterType $newsletterType
      */
     public function removeNewsletterType(NewsletterType $newsletterType){
-        $this->newsletterTypes->removeElement($newsletterType);
+        if($this->getNewsletterTypes()->contains($newsletterType)){
+            $this->newsletterTypes->removeElement($newsletterType);
+
+        }
+        else{
+            return;
+        }
     }
     /**
      * Get newsletterType
