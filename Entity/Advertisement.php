@@ -40,9 +40,9 @@ class Advertisement
     /**
      * @var string
      *
-     * @ORM\Column(name="image_location", type="string", length =255)
+     * @ORM\Column(name="image_link", type="string", length =255)
      */
-    private $imageLocation;
+    private $imageLink;
 
     /**
      * @var string
@@ -127,24 +127,24 @@ class Advertisement
         return $this;
     }
     /**
-     * Get imageLocation
+     * Get imageLink
      *
      * @return string
      */
-    public function getImageLocation()
+    public function getImageLink()
     {
-        return $this->imageLocation;
+        return $this->imageLink;
     }
 
     /**
-     * Set imageLocation
+     * Set imageLink
      *
-     * @param $imageLocation
+     * @param $imageLink
      * @return $this
      */
-    public function setImageLocation($imageLocation)
+    public function setImageLink($imageLink)
     {
-        $this->imageLocation = $imageLocation;
+        $this->imageLink = $imageLink;
 
         return $this;
     }
