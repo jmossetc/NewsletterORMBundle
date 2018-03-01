@@ -24,17 +24,21 @@ class NewsletterRepository extends EntityRepository
      * @param $numberPerPage
      * @return Paginator
      */
-    public function getNewsletters($page, $numberPerPage)
+    public function getNewsletters($page, $numberPerPage, $sortArray = [])
     {
-        $query = $this->createQueryBuilder('n')
-            ->leftJoin('n.newsletterType', 't')
-            ->addSelect('n')
-            ->getQuery();
+        $query = $this->createQueryBuilder('newsletter')
+            ->leftJoin('newsletter.newsletterType', 't')
+            ->addSelect('newsletter');
+
+        foreach ($sortArray as $sort){
+            $query->addOrderBy($sort['column'], $sort['order']);
+        }
+
+        $query->getQuery();
 
         $query->setFirstResult(($page - 1) * $numberPerPage)
             ->setMaxResults($numberPerPage);
 
         return new Paginator($query, true);
-
     }
 }
