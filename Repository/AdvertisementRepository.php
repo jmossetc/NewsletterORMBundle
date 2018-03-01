@@ -19,14 +19,19 @@ class AdvertisementRepository extends EntityRepository
      * @param $numberPerPage
      * @return Paginator
      */
-    public function getAdvertisements($page, $numberPerPage)
+    public function getAdvertisements($page, $numberPerPage, $sortArray = [])
     {
-        $query = $this->createQueryBuilder('a')
-            ->leftJoin('a.newsletterTypes', 'nt')
-            ->leftJoin('a.dates', 'd')
+        $query = $this->createQueryBuilder('advertisement')
+            ->leftJoin('advertisement.newsletterTypes', 'nt')
+            ->leftJoin('advertisement.dates', 'd')
             ->addSelect('nt')
-            ->addSelect('d')
-            ->getQuery();
+            ->addSelect('d');
+
+        foreach ($sortArray as $sort){
+            $query->addOrderBy($sort['column'], $sort['order']);
+        }
+
+        $query->getQuery();
 
         $query->setFirstResult(($page - 1) * $numberPerPage)
             ->setMaxResults($numberPerPage);
