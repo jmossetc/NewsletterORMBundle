@@ -41,4 +41,26 @@ class NewsletterRepository extends EntityRepository
 
         return new Paginator($query, true);
     }
+
+    public function getApplicableAds($newsletterId){
+        $newsletter = $this->find($newsletterId);
+
+        $qb = $this->createQueryBuilder();
+
+        $query = $qb->select(['imageLink', 'redirectURL', 'position'])
+            ->from('Advertisement', 'a')
+            ->leftJoin('advertisement.newsletterTypes', 'type', Doctrine\ORM\Query\Expr\Join::WITH, $qb->expr()->andX(
+                $qb->expr()->eq('type.name', ':type')
+            ))
+            ->leftJoin('advertisement.dates', 'dates', Doctrine\ORM\Query\Expr\Join::WITH, $qb->expr()->andX(
+                $qb->expr()->lte('dates.beginningDate', ':date'),
+                $qb->expr()->gte('dates.endDate', ':date')
+            ))
+        ->setParameters([
+            'type' => $newsletter->getNewsletterType(),
+            'date' => $newsletter->getDispatchDate()
+        ]);
+
+        return $query->getResult();
+    }
 }
