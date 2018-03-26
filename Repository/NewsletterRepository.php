@@ -50,10 +50,10 @@ class NewsletterRepository extends EntityRepository
 
         $query = $qb->select('a')
             ->from('BayardNewsletterORMBundle:Advertisement', 'a')
-            ->leftJoin('a.newsletterTypes', 'type', Join::WITH, $qb->expr()->andX(
+            ->innerJoin('a.newsletterTypes', 'type', Join::WITH, $qb->expr()->andX(
                 $qb->expr()->eq('type.name', ':type')
             ))
-            ->leftJoin('a.dates', 'dates', Join::WITH, $qb->expr()->andX(
+            ->innerJoin('a.dates', 'dates', Join::WITH, $qb->expr()->andX(
                 $qb->expr()->lte('dates.beginningDate', ':date'),
                 $qb->expr()->gte('dates.endDate', ':date')
             ))
