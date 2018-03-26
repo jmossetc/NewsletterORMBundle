@@ -43,6 +43,30 @@ class NewsletterRepository extends EntityRepository
         return new Paginator($query, true);
     }
 
+    /**
+     * Return all Newsletters that should be sent.
+     * @return mixed
+     */
+    public function getNewslettersToSend(){
+        $qb =$this->createQueryBuilder('n')
+            ->where('n.status != :sent')
+            ->andWhere('n.status != :abandonned')
+            ->andWhere('n.date >= :now')
+            ->setParameters([
+                'abandonned' => 'abandonned',
+                'sent' => 'sent',
+                'now' => new \DateTime()
+            ]);
+
+        return $qb->getQuery()->getResult();
+
+    }
+
+    /**
+     * Return all ads that are applicable to given newsletter
+     * @param $newsletterId
+     * @return mixed
+     */
     public function getApplicableAds($newsletterId){
         $newsletter = $this->find($newsletterId);
 
