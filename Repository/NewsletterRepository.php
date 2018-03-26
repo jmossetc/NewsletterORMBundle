@@ -50,10 +50,10 @@ class NewsletterRepository extends EntityRepository
 
         $query = $qb->select(['imageLink', 'redirectURL', 'position'])
             ->from('Advertisement', 'a')
-            ->leftJoin('advertisement.newsletterTypes', 'type', Join::WITH, $qb->expr()->andX(
+            ->leftJoin('a.newsletterTypes', 'type', Join::WITH, $qb->expr()->andX(
                 $qb->expr()->eq('type.name', ':type')
             ))
-            ->leftJoin('advertisement.dates', 'dates', Join::WITH, $qb->expr()->andX(
+            ->leftJoin('a.dates', 'dates', Join::WITH, $qb->expr()->andX(
                 $qb->expr()->lte('dates.beginningDate', ':date'),
                 $qb->expr()->gte('dates.endDate', ':date')
             ))
