@@ -51,7 +51,7 @@ class NewsletterRepository extends EntityRepository
         $qb =$this->createQueryBuilder('n')
             ->andWhere('n.status != :sent')
             ->andWhere('n.status != :abandonned')
-            ->andWhere('n.dispatchDate >= :now')
+            ->andWhere('n.dispatchDate <= :now')
             ->setParameters([
                 'abandonned' => 'abandonned',
                 'sent' => 'sent',
