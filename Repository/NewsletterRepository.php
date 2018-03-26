@@ -4,6 +4,7 @@ namespace Bayard\NewsletterORMBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * NewsletterRepository
@@ -49,10 +50,10 @@ class NewsletterRepository extends EntityRepository
 
         $query = $qb->select(['imageLink', 'redirectURL', 'position'])
             ->from('advertisement', 'a')
-            ->leftJoin('advertisement.newsletterTypes', 'type', Doctrine\ORM\Query\Expr\Join::WITH, $qb->expr()->andX(
+            ->leftJoin('advertisement.newsletterTypes', 'type', Join::WITH, $qb->expr()->andX(
                 $qb->expr()->eq('type.name', ':type')
             ))
-            ->leftJoin('advertisement.dates', 'dates', Doctrine\ORM\Query\Expr\Join::WITH, $qb->expr()->andX(
+            ->leftJoin('advertisement.dates', 'dates', Join::WITH, $qb->expr()->andX(
                 $qb->expr()->lte('dates.beginningDate', ':date'),
                 $qb->expr()->gte('dates.endDate', ':date')
             ))
