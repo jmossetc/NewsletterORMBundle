@@ -45,10 +45,10 @@ class NewsletterRepository extends EntityRepository
     public function getApplicableAds($newsletterId){
         $newsletter = $this->find($newsletterId);
 
-        $qb = $this->createQueryBuilder();
+        $qb = $this->createQueryBuilder('advertisement');
 
         $query = $qb->select(['imageLink', 'redirectURL', 'position'])
-            ->from('Advertisement', 'a')
+            ->from('advertisement', 'a')
             ->leftJoin('advertisement.newsletterTypes', 'type', Doctrine\ORM\Query\Expr\Join::WITH, $qb->expr()->andX(
                 $qb->expr()->eq('type.name', ':type')
             ))
