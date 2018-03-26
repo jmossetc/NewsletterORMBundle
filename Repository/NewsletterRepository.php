@@ -48,7 +48,7 @@ class NewsletterRepository extends EntityRepository
 
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $query = $qb->select(['imageLink', 'redirectURL', 'position'])
+        $query = $qb->select('a')
             ->from('BayardNewsletterORMBundle:Advertisement', 'a')
             ->leftJoin('a.newsletterTypes', 'type', Join::WITH, $qb->expr()->andX(
                 $qb->expr()->eq('type.name', ':type')
