@@ -57,6 +57,7 @@ class NewsletterRepository extends EntityRepository
                 $qb->expr()->lte('dates.beginningDate', ':date'),
                 $qb->expr()->gte('dates.endDate', ':date')
             ))
+            ->where('a.enabled = 1')
         ->setParameters([
             'type' => $newsletter->getNewsletterType(),
             'date' => $newsletter->getDispatchDate()
