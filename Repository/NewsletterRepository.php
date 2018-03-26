@@ -4,6 +4,7 @@ namespace Bayard\NewsletterORMBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * NewsletterRepository
