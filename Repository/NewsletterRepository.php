@@ -62,6 +62,6 @@ class NewsletterRepository extends EntityRepository
             'date' => $newsletter->getDispatchDate()
         ]);
 
-        return $query->getResult();
+        return $query->getQuery()->getResult();
     }
 }
