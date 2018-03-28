@@ -71,14 +71,14 @@ class AdvertisementsManager
 
         $crawler = new HtmlPageCrawler((string)$htmlFile['Body']);
 
-        $crawler->filter('.advertisement > a')->removeAttr('href');
-        $crawler->filter('.advertisement > img')->removeAttr('src');
-
-        dump($advertisementEntities);
+        $crawler->filter('.advertisement')->css('display', 'none');
+        $crawler->filter('.advertisement a')->removeAttr('href');
+        $crawler->filter('.advertisement img')->removeAttr('src');
 
         foreach ($advertisementEntities as $ad) {
-            dump($ad);
-            $logger->info('[' . date(DATE_ISO8601) . '] Advertisement at position ' . $ad->getPosition());
+            if($logger !== null) {
+                $logger->info('[' . date(DATE_ISO8601) . '] Advertisement at position ' . $ad->getPosition());
+            }
             if ($crawler->filter('.advertisement.ad-' . $ad->getPosition())->count() > 0) {
                 $style = $crawler->filter('.advertisement.ad-' . $ad->getPosition())->css('display', 'table');
                 //$style = str_replace("display:none!important;", "", $style);
@@ -94,7 +94,7 @@ class AdvertisementsManager
                     date(DATE_ISO8601) .
                     '] Advertisement of Id ' .
                     $ad->getId() .
-                    'cannot be inserted into newsletter of Id ' .
+                    ' cannot be inserted into newsletter of Id ' .
                     $newsletterEntity->getId() .
                     ' because the position' .
                     $ad->getPosition() .
