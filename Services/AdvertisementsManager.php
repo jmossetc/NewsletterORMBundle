@@ -66,7 +66,7 @@ class AdvertisementsManager
     {
         $htmlFile = $this->s3->getObject([
             'Bucket' => $this->bucket,
-            'Key' => $newsletterEntity->getXmlLocation()
+            'Key' => $newsletterEntity->getHtmlLocation()
         ]);
 
         $crawler = new HtmlPageCrawler((string)$htmlFile['Body']);
@@ -103,7 +103,7 @@ class AdvertisementsManager
         dump($crawler);
         $result = $this->s3->putObject(array(
             'Bucket' => $this->bucket,
-            'Key' => $newsletterEntity->getXmlLocation(),
+            'Key' => $newsletterEntity->getHtmlLocation(),
             'ContentType' => 'text/html',
             'Body' => $crawler->saveHTML(),
             'ACL' => 'public-read',
