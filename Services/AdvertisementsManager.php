@@ -62,6 +62,12 @@ class AdvertisementsManager
         ]);
     }
 
+    /**
+     * @param $newsletterEntity
+     * @param $advertisementEntities
+     * @param null $logger
+     * @return mixed
+     */
     public function insertAdvertisements($newsletterEntity, $advertisementEntities, $logger = null)
     {
         $htmlFile = $this->s3->getObject([
@@ -102,7 +108,7 @@ class AdvertisementsManager
                 );
             }
         }
-        $result = $this->s3->putObject(array(
+        $this->s3->putObject(array(
             'Bucket' => $this->bucket,
             'Key' => $newsletterEntity->getHtmlLocation(),
             'ContentType' => 'text/html',
@@ -110,6 +116,8 @@ class AdvertisementsManager
             'ACL' => 'public-read',
             'StorageClass' => 'STANDARD',
         ));
+
+        return $crawler->saveHTML();
     }
 
 
