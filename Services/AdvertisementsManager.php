@@ -71,12 +71,13 @@ class AdvertisementsManager
 
         $crawler = new HtmlPageCrawler((string)$htmlFile['Body']);
 
-        dump($crawler);
-
         $crawler->filter('.advertisement.essentiel > a')->removeAttr('href');
         $crawler->filter('.advertisement.essentiel > img')->removeAttr('src');
 
+        dump($advertisementEntities);
+
         foreach ($advertisementEntities as $ad) {
+            dump($ad);
             $logger->info('[' . date(DATE_ISO8601) . '] Advertisement at position ' . $ad->getPosition());
             if ($crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->count() > 0) {
                 $style = $crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->getStyle();
@@ -101,7 +102,6 @@ class AdvertisementsManager
                 );
             }
         }
-        dump($crawler);
         $result = $this->s3->putObject(array(
             'Bucket' => $this->bucket,
             'Key' => $newsletterEntity->getHtmlLocation(),
