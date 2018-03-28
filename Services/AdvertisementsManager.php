@@ -66,7 +66,7 @@ class AdvertisementsManager
     {
         $htmlFile = $this->s3->getObject([
             'Bucket' => $this->bucket,
-            $newsletterEntity->getXmlLocation()
+            'Key' => $newsletterEntity->getXmlLocation()
         ]);
 
         $crawler = new HtmlPageCrawler($htmlFile['Body']);
