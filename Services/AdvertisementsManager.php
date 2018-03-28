@@ -80,9 +80,9 @@ class AdvertisementsManager
             dump($ad);
             $logger->info('[' . date(DATE_ISO8601) . '] Advertisement at position ' . $ad->getPosition());
             if ($crawler->filter('.advertisement.ad-' . $ad->getPosition())->count() > 0) {
-                $style = $crawler->filter('.advertisement.ad-' . $ad->getPosition())->getStyle();
-                $style = str_replace("display:none!important;", "", $style);
-                $crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->setStyle($style);
+                $style = $crawler->filter('.advertisement.ad-' . $ad->getPosition())->css('display', 'table');
+                //$style = str_replace("display:none!important;", "", $style);
+                //$crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->setStyle($style);
 
                 $crawler->filter('.advertisement.ad-' . $ad->getPosition() . ' > a')
                     ->setAttribute('href', $ad->getRedirectURL());
