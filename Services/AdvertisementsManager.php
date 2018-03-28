@@ -71,6 +71,8 @@ class AdvertisementsManager
 
         $crawler = new HtmlPageCrawler((string)$htmlFile['Body']);
 
+        dump($crawler);
+
         $crawler->filter('.advertisement.essentiel > a')->removeAttr('href');
         $crawler->filter('.advertisement.essentiel > img')->removeAttr('src');
 
@@ -98,7 +100,7 @@ class AdvertisementsManager
                 );
             }
         }
-
+        dump($crawler);
         $result = $this->s3->putObject(array(
             'Bucket' => $this->bucket,
             'Key' => $newsletterEntity->getXmlLocation(),
