@@ -11,7 +11,8 @@ namespace Bayard\NewsletterORMBundle\Services;
 use Aws\S3\S3Client;
 use Aws\Sqs\SqsClient;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Symfony\Component\DomCrawler\Crawler;
+use \Wa72\HtmlPageDom\HtmlPageCrawler;
 
 class AdvertisementsManager
 {
@@ -61,13 +62,31 @@ class AdvertisementsManager
         ]);
     }
 
-    public function insertAdvertisements($newsletterEntity, $advertisementEntities){
+    public function insertAdvertisements($newsletterEntity, $advertisementEntities)
+    {
         $htmlFile = $this->s3->getObject([
             'Bucket' => $this->bucket,
             $newsletterEntity->getXmlLocation()
         ]);
 
+        $crawler = new HtmlPageCrawler($htmlFile['Body']);
 
+        $crawler->filter('.advertisement.essentiel > a')->removeAttr('href');
+        $crawler->filter('.advertisement.essentiel > img')->removeAttr('src');
+
+        foreach ($advertisementEntities as $ad) {
+            if ($crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->count() > 0) {
+                $style = $crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->getStyle();
+                $style = str_replace("display:none!important;", "", $style);
+                $crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->setStyle($style);
+
+                $crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition() . ' > a')
+                    ->setAttribute('href', $ad->getRedirectURL());
+                $crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition() . ' > a > img')
+                    ->setAttribute('href', $ad->getImageLink());
+            }
+        }
     }
+
 
 }
