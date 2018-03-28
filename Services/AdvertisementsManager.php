@@ -84,10 +84,10 @@ class AdvertisementsManager
                 //$style = str_replace("display:none!important;", "", $style);
                 //$crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->setStyle($style);
 
-                $crawler->filter('.advertisement.ad-' . $ad->getPosition() . ' > a')
+                $crawler->filter('.advertisement.ad-' . $ad->getPosition() . ' a')
                     ->setAttribute('href', $ad->getRedirectURL());
-                $crawler->filter('.advertisement.ad-' . $ad->getPosition() . ' > a > img')
-                    ->setAttribute('href', $ad->getImageLink());
+                $crawler->filter('.advertisement.ad-' . $ad->getPosition() . ' img')
+                    ->setAttribute('src', $ad->getImageLink());
             } elseif ($logger !== null) {
                 $logger->info(
                     '[' .
