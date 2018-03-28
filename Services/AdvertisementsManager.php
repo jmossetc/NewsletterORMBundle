@@ -62,7 +62,7 @@ class AdvertisementsManager
         ]);
     }
 
-    public function insertAdvertisements($newsletterEntity, $advertisementEntities)
+    public function insertAdvertisements($newsletterEntity, $advertisementEntities, $logger = null)
     {
         $htmlFile = $this->s3->getObject([
             'Bucket' => $this->bucket,
@@ -84,6 +84,18 @@ class AdvertisementsManager
                     ->setAttribute('href', $ad->getRedirectURL());
                 $crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition() . ' > a > img')
                     ->setAttribute('href', $ad->getImageLink());
+            } elseif ($logger !== null) {
+                $logger->info(
+                    '[' .
+                    date(DATE_ISO8601) .
+                    '] Advertisement of Id ' .
+                    $ad->getId() .
+                    'cannot be inserted into newsletter of Id ' .
+                    $newsletterEntity->getId() .
+                    ' because the position' .
+                    $ad->getPosition() .
+                    ' does not exist'
+                );
             }
         }
 
