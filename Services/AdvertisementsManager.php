@@ -69,7 +69,7 @@ class AdvertisementsManager
             'Key' => $newsletterEntity->getXmlLocation()
         ]);
 
-        $crawler = new HtmlPageCrawler($htmlFile['Body']);
+        $crawler = new HtmlPageCrawler((string)$htmlFile['Body']);
 
         $crawler->filter('.advertisement.essentiel > a')->removeAttr('href');
         $crawler->filter('.advertisement.essentiel > img')->removeAttr('src');
