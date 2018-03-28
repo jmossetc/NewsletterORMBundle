@@ -77,6 +77,7 @@ class AdvertisementsManager
         $crawler->filter('.advertisement.essentiel > img')->removeAttr('src');
 
         foreach ($advertisementEntities as $ad) {
+            $logger->info('[' . date(DATE_ISO8601) . '] Advertisement at position ' . $ad->getPosition());
             if ($crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->count() > 0) {
                 $style = $crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->getStyle();
                 $style = str_replace("display:none!important;", "", $style);
