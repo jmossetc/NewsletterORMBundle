@@ -2,8 +2,8 @@ services:
 #    bayard_newsletter_orm.example:
 #        class: Bayard\NewsletterORMBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
-    open4xmlparser.newsmanager:
-        class: Bayard\Open4XMLParserBundle\Services\NewsManager
+    newsletterorm.admanager:
+        class: Bayard\NewsletterORMBundle\Services\AdvertisementsManager
         arguments:
             $em : '@doctrine.orm.entity_manager'
             $version: 'latest'
