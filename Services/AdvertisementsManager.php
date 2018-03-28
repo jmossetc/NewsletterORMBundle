@@ -86,6 +86,15 @@ class AdvertisementsManager
                     ->setAttribute('href', $ad->getImageLink());
             }
         }
+
+        $result = $this->s3->putObject(array(
+            'Bucket' => $this->bucket,
+            'Key' => $newsletterEntity->getXmlLocation(),
+            'ContentType' => 'text/html',
+            'Body' => $crawler->saveHTML(),
+            'ACL' => 'public-read',
+            'StorageClass' => 'STANDARD',
+        ));
     }
 
 
