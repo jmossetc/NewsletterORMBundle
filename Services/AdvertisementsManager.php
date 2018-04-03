@@ -82,30 +82,13 @@ class AdvertisementsManager
         $crawler->filter('.advertisement img')->removeAttr('src');
 
         foreach ($advertisementEntities as $ad) {
-            if($logger !== null) {
+            if ($logger !== null) {
                 $logger->info('[' . date(DATE_ISO8601) . '] Advertisement at position ' . $ad->getPosition());
             }
             if ($crawler->filter('.advertisement.ad-' . $ad->getPosition())->count() > 0) {
-                $style = $crawler->filter('.advertisement.ad-' . $ad->getPosition())->css('display', 'table');
-                //$style = str_replace("display:none!important;", "", $style);
-                //$crawler->filter('.advertisement.essentiel.ad-' . $ad->getPosition())->setStyle($style);
-
-                $crawler->filter('.advertisement.ad-' . $ad->getPosition() . ' a')
-                    ->setAttribute('href', $ad->getRedirectURL());
-                $crawler->filter('.advertisement.ad-' . $ad->getPosition() . ' img')
-                    ->setAttribute('src', $ad->getImageLink());
-            } elseif ($logger !== null) {
-                $logger->info(
-                    '[' .
-                    date(DATE_ISO8601) .
-                    '] Advertisement of Id ' .
-                    $ad->getId() .
-                    ' cannot be inserted into newsletter of Id ' .
-                    $newsletterEntity->getId() .
-                    ' because the position' .
-                    $ad->getPosition() .
-                    ' does not exist'
-                );
+                $this->insertAdvertisement($ad, $crawler, $ad->getPosition());
+            } else {
+                $this->insertAdvertisement($ad, $crawler, $newsletterEntity->getNbPositions());
             }
         }
         $this->s3->putObject(array(
@@ -118,6 +101,21 @@ class AdvertisementsManager
         ));
 
         return $crawler->saveHTML();
+    }
+
+    /**
+     * @param $ad
+     * @param $crawler
+     * @param $position
+     */
+    public function insertAdvertisement($ad, $crawler, $position)
+    {
+        $crawler->filter('.advertisement.ad-' . $position)->css('display', 'table');
+
+        $crawler->filter('.advertisement.ad-' . $position . ' a')
+            ->setAttribute('href', $ad->getRedirectURL());
+        $crawler->filter('.advertisement.ad-' . $ad->getPosition() . ' img')
+            ->setAttribute('src', $ad->getImageLink());
     }
 
 

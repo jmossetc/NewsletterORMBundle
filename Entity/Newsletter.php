@@ -23,6 +23,13 @@ class Newsletter
     private $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_positions", type="integer")
+     */
+    private $nbPositions;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
@@ -151,6 +158,7 @@ class Newsletter
     {
         return $this->textLocation;
     }
+
     /**
      * Set textLocation
      *
@@ -248,4 +256,21 @@ class Newsletter
         return $this->status;
     }
 
+    /**
+     * @param $nbPositions
+     * @return Newsletter
+     */
+    public function setNbPositions($nbPositions)
+    {
+        $this->nbPositions = $nbPositions;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbPositions()
+    {
+        return $this->nbPositions;
+    }
 }
