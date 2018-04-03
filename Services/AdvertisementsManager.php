@@ -84,12 +84,12 @@ class AdvertisementsManager
         foreach ($advertisementEntities as $ad) {
             if ($logger !== null) {
                 $logger->info('[' . date(DATE_ISO8601) . '] Advertisement at position ' . $ad->getPosition());
-            }
+            }/*
             if ($crawler->filter('.advertisement.ad-' . $ad->getPosition())->count() > 0) {
                 $this->insertAdvertisement($ad, $crawler, $ad->getPosition());
             } else {
                 $this->insertAdvertisement($ad, $crawler, $newsletterEntity->getNbPositions());
-            }
+            }*/
         }
         $this->s3->putObject(array(
             'Bucket' => $this->bucket,
