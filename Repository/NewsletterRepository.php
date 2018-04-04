@@ -55,9 +55,9 @@ class NewsletterRepository extends EntityRepository
         $query = $qb->select('n')
             ->from('BayardNewsletterORMBundle:Newsletter', 'n')
             ->innerJoin('n.newsletterType', 'type', Join::WITH, $qb->expr()->andX(
-                $qb->expr()->eq('type.name', '?type')
+                $qb->expr()->eq('type.name', ':type')
             ))
-            ->where('n.open4Id = ?id')
+            ->where('n.open4Id = :id')
             ->setParameters([
                 'type' => $newsletterType,
                 'id' => $open4Id
