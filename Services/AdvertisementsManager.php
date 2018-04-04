@@ -124,7 +124,7 @@ class AdvertisementsManager
 
         $crawler->filter($targetSelector . '.advertisement.ad-' . $position . ' a')
             ->setAttribute('href', $ad->getRedirectURL());
-        $crawler->filter($targetSelector . '.advertisement.ad-' . $ad->getPosition() . ' img')
+        $crawler->filter($targetSelector . '.advertisement.ad-' . $position . ' img')
             ->setAttribute('src', $ad->getImageLink());
     }
 
