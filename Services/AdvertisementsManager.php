@@ -82,13 +82,23 @@ class AdvertisementsManager
         $crawler->filter('.advertisement img')->removeAttr('src');
 
         foreach ($advertisementEntities as $ad) {
+            switch ($ad->getTarget()){
+                case 'subscribers':
+                    $selector = '.ad-subscriber';
+                    break;
+                case 'not_subscribers':
+                    $selector = '.ad-not-subscriber';
+                    break;
+                default:
+                    $selector = '.ad-all';
+            }
             if ($logger !== null) {
                 $logger->info('[' . date(DATE_ISO8601) . '] Advertisement at position ' . $ad->getPosition());
             }
             if ($crawler->filter('.advertisement.ad-' . $ad->getPosition())->count() > 0) {
-                $this->insertAdvertisement($ad, $crawler, $ad->getPosition());
+                $this->insertAdvertisement($ad, $crawler, $ad->getPosition(), $selector);
             } else {
-                $this->insertAdvertisement($ad, $crawler, $newsletterEntity->getNbPositions());
+                $this->insertAdvertisement($ad, $crawler, $newsletterEntity->getNbPositions(), $selector);
             }
         }
         $this->s3->putObject(array(
@@ -108,13 +118,13 @@ class AdvertisementsManager
      * @param $crawler
      * @param $position
      */
-    public function insertAdvertisement($ad, $crawler, $position)
+    public function insertAdvertisement($ad, $crawler, $position, $targetSelector)
     {
-        $crawler->filter('.advertisement.ad-' . $position)->css('display', 'table');
+        $crawler->filter($targetSelector . '.advertisement.ad-' . $position)->css('display', 'table');
 
-        $crawler->filter('.advertisement.ad-' . $position . ' a')
+        $crawler->filter($targetSelector . '.advertisement.ad-' . $position . ' a')
             ->setAttribute('href', $ad->getRedirectURL());
-        $crawler->filter('.advertisement.ad-' . $ad->getPosition() . ' img')
+        $crawler->filter($targetSelector . '.advertisement.ad-' . $ad->getPosition() . ' img')
             ->setAttribute('src', $ad->getImageLink());
     }
 
