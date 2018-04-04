@@ -32,7 +32,7 @@ class Newsletter
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="open4_id", type="integer")
      */
     private $open4Id;
 
