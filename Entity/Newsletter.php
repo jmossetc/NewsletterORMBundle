@@ -30,6 +30,13 @@ class Newsletter
     private $nbPositions;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     */
+    private $open4Id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
@@ -88,6 +95,24 @@ class Newsletter
     }
 
     /**
+     * @return int
+     */
+    public function getOpen4Id()
+    {
+        return $this->open4Id;
+    }
+
+    /**
+     * @param int $open4Id
+     * @return Newsletter
+     */
+    public function setOpen4Id($open4Id)
+    {
+        $this->open4Id = $open4Id;
+        return $this;
+    }
+
+    /**
      * Set title
      *
      * @param string $title
@@ -97,7 +122,6 @@ class Newsletter
     public function setTitle($title)
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -121,7 +145,6 @@ class Newsletter
     public function setXmlLocation($xmlLocation)
     {
         $this->xmlLocation = $xmlLocation;
-
         return $this;
     }
 
@@ -145,7 +168,6 @@ class Newsletter
     public function setHtmlLocation($htmlLocation)
     {
         $this->htmlLocation = $htmlLocation;
-
         return $this;
     }
 
@@ -169,7 +191,6 @@ class Newsletter
     public function setTextLocation($textLocation)
     {
         $this->textLocation = $textLocation;
-
         return $this;
     }
 
@@ -194,7 +215,6 @@ class Newsletter
     public function setDispatchDate($dispatchDate)
     {
         $this->dispatchDate = $dispatchDate;
-
         return $this;
     }
 
@@ -218,7 +238,6 @@ class Newsletter
     public function setNewsletterType(NewsletterType $newsletterType = null)
     {
         $this->newsletterType = $newsletterType;
-
         return $this;
     }
 
@@ -242,7 +261,6 @@ class Newsletter
     public function setStatus($status)
     {
         $this->status = $status;
-
         return $this;
     }
 
