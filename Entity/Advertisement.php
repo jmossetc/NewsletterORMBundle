@@ -93,6 +93,11 @@ class Advertisement
      * @ORM\Column(name="position", type="smallint")
      */
     private $position;
+    /**
+     * @var string
+     * @ORM\Column(name="target", type="string", columnDefinition="ENUM('all', 'subscribers', 'not_subscribers')")
+     */
+    private $target;
 
     /**
      * Get id
@@ -102,6 +107,23 @@ class Advertisement
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTarget(){
+        return $this->target;
+    }
+
+    /**
+     * @param string $target
+     * @return $this
+     */
+    public function setTarget($target)
+    {
+        $this->target = $target;
+        return $this;
     }
 
     /**
