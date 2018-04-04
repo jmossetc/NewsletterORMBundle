@@ -31,7 +31,7 @@ class NewsletterRepository extends EntityRepository
             ->leftJoin('newsletter.newsletterType', 't')
             ->addSelect('newsletter');
 
-        foreach ($sortArray as $sort){
+        foreach ($sortArray as $sort) {
             $query->addOrderBy($sort['column'], $sort['order']);
         }
 
@@ -44,11 +44,35 @@ class NewsletterRepository extends EntityRepository
     }
 
     /**
+     * @param $open4Id
+     * @param $newsletterType
+     * @return mixed
+     */
+    public function getNewslettersFromOpen4Id($open4Id, $newsletterType)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $query = $qb->select('n')
+            ->from('BayardNewsletterORMBundle:Newsletter', 'n')
+            ->innerJoin('n.newsletterType', 'type', Join::WITH, $qb->expr()->andX(
+                $qb->expr()->eq('type.name', '?type')
+            ))
+            ->where('n.open4Id = ?id')
+            ->setParameters([
+                'type' => $newsletterType,
+                'id' => $open4Id
+            ]);
+
+        return $query->getQuery()->getResult();
+    }
+
+    /**
      * Return all Newsletters that should be sent.
      * @return mixed
      */
-    public function getNewslettersToSend(){
-        $qb =$this->createQueryBuilder('n')
+    public function getNewslettersToSend()
+    {
+        $qb = $this->createQueryBuilder('n')
             ->andWhere('n.status != :sent')
             ->andWhere('n.status != :abandonned')
             ->andWhere('n.dispatchDate <= :now')
@@ -67,7 +91,8 @@ class NewsletterRepository extends EntityRepository
      * @param $newsletterId
      * @return mixed
      */
-    public function getApplicableAds($newsletterId){
+    public function getApplicableAds($newsletterId)
+    {
         $newsletter = $this->find($newsletterId);
 
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -82,10 +107,10 @@ class NewsletterRepository extends EntityRepository
                 $qb->expr()->gte('dates.endDate', ':date')
             ))
             ->where('a.enabled = 1')
-        ->setParameters([
-            'type' => $newsletter->getNewsletterType(),
-            'date' => $newsletter->getDispatchDate()
-        ]);
+            ->setParameters([
+                'type' => $newsletter->getNewsletterType(),
+                'date' => $newsletter->getDispatchDate()
+            ]);
 
         return $query->getQuery()->getResult();
     }
