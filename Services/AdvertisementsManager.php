@@ -63,6 +63,17 @@ class AdvertisementsManager
     }
 
     /**
+     * @param $crawler
+     */
+    public function insertTargetingConditions($crawler)
+    {
+        $crawler->filter('.ad-subscriber')->insertBefore("<% if(targetData.abonne=='1'){ %>");
+        $crawler->filter('.ad-not-subscriber')->insertBefore("<% if(targetData.abonne=='2'){ %>");
+        $crawler->filter('.ad-subscriber, .ad-not-subscriber')->insertAfter('<% } %>');
+
+    }
+
+    /**
      * @param $newsletterEntity
      * @param $advertisementEntities
      * @param null $logger
@@ -82,7 +93,7 @@ class AdvertisementsManager
         $crawler->filter('.advertisement img')->removeAttr('src');
 
         foreach ($advertisementEntities as $ad) {
-            switch ($ad->getTarget()){
+            switch ($ad->getTarget()) {
                 case 'subscribers':
                     $selector = '.ad-subscriber';
                     break;
@@ -101,6 +112,9 @@ class AdvertisementsManager
                 $this->insertAdvertisement($ad, $crawler, $newsletterEntity->getNbPositions(), $selector);
             }
         }
+
+        $this->insertTargetingConditions($crawler);
+
         $this->s3->putObject(array(
             'Bucket' => $this->bucket,
             'Key' => $newsletterEntity->getHtmlLocation(),
@@ -127,6 +141,4 @@ class AdvertisementsManager
         $crawler->filter($targetSelector . '.advertisement.ad-' . $position . ' img')
             ->setAttribute('src', $ad->getImageLink());
     }
-
-
 }
