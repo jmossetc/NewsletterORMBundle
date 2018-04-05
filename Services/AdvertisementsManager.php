@@ -63,13 +63,40 @@ class AdvertisementsManager
     }
 
     /**
+     * Insert subscriber conditions into newsletter
+     *
      * @param $crawler
+     * @return string - the html content of the newsletter
      */
-    public function insertTargetingConditions($crawler)
+    public function insertTargetingConditions(HtmlPageCrawler $crawler)
     {
-        $crawler->filter('.ad-subscriber')->insertBefore("<% if(targetData.abonne=='1'){ %>");
-        $crawler->filter('.ad-not-subscriber')->insertBefore("<% if(targetData.abonne=='2'){ %>");
-        $crawler->filter('.ad-subscriber, .ad-not-subscriber')->insertAfter('<% } %>');
+        $htmlContent = $crawler->saveHtml();
+
+        $htmlContent = str_replace(
+            '<!-- IsSubscribedBegin -->',
+            "<%if(targetData.abonne=='1'){%><!-- IsSubscribedBegin -->",
+            $htmlContent
+        );
+
+        $htmlContent = str_replace(
+            '<!-- IsNotSubscribedBegin -->',
+            "<%if(targetData.abonne=='2'){%><!-- IsNotSubscribedBegin -->",
+            $htmlContent
+        );
+
+        $htmlContent = str_replace(
+            '<!-- IsSubscribedEnd -->',
+            "<!-- IsSubscribedEnd --><%}%>",
+            $htmlContent
+        );
+
+        $htmlContent = str_replace(
+            '<!-- IsNotSubscribedEnd -->',
+            "<!-- IsNotSubscribedEnd --><%}%>",
+            $htmlContent
+        );
+
+        return $htmlContent;
 
     }
 
@@ -79,8 +106,12 @@ class AdvertisementsManager
      * @param null $logger
      * @return mixed
      */
-    public function insertAdvertisements($newsletterEntity, $advertisementEntities, $logger = null)
-    {
+    public function insertAdvertisements(
+        $newsletterEntity,
+        $advertisementEntities,
+        $isForNeolane = false,
+        $logger = null
+    ) {
         $htmlFile = $this->s3->getObject([
             'Bucket' => $this->bucket,
             'Key' => $newsletterEntity->getHtmlLocation()
@@ -113,18 +144,23 @@ class AdvertisementsManager
             }
         }
 
-        $this->insertTargetingConditions($crawler);
+        if ($isForNeolane) {
+            $htmlContent = $this->insertTargetingConditions($crawler);
 
-        $this->s3->putObject(array(
-            'Bucket' => $this->bucket,
-            'Key' => $newsletterEntity->getHtmlLocation(),
-            'ContentType' => 'text/html',
-            'Body' => $crawler->saveHTML(),
-            'ACL' => 'public-read',
-            'StorageClass' => 'STANDARD',
-        ));
+            $this->s3->putObject(array(
+                'Bucket' => $this->bucket,
+                'Key' => $newsletterEntity->getHtmlLocation(),
+                'ContentType' => 'text/html',
+                'Body' => $htmlContent,
+                'ACL' => 'public-read',
+                'StorageClass' => 'STANDARD',
+            ));
+        }
+        else{
+            $htmlContent = $crawler->saveHTML();
+        }
 
-        return $crawler->saveHTML();
+        return $htmlContent;
     }
 
     /**
