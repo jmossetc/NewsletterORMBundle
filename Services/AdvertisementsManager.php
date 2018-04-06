@@ -68,10 +68,8 @@ class AdvertisementsManager
      * @param $crawler
      * @return string - the html content of the newsletter
      */
-    public function insertTargetingConditions(HtmlPageCrawler $crawler)
+    public function insertTargetingConditions($htmlContent)
     {
-        $htmlContent = $crawler->minify()->save();
-
         $htmlContent = str_replace(
             '<!-- IsSubscribedBegin -->',
             "<%if(targetData.abonne=='1'){%><!-- IsSubscribedBegin -->",
@@ -119,9 +117,7 @@ class AdvertisementsManager
 
         $crawler = new HtmlPageCrawler((string)$htmlFile['Body']);
 
-        $crawler->filter('.advertisement')->css('display', 'none');
-        $crawler->filter('.advertisement a')->removeAttr('href');
-        $crawler->filter('.advertisement img')->removeAttr('src');
+        $htmlContent = $crawler->saveHTML();
 
         foreach ($advertisementEntities as $ad) {
             switch ($ad->getTarget()) {
@@ -137,15 +133,15 @@ class AdvertisementsManager
             if ($logger !== null) {
                 $logger->info('[' . date(DATE_ISO8601) . '] Advertisement at position ' . $ad->getPosition());
             }
-            if ($crawler->filter('.advertisement.ad-' . $ad->getPosition())->count() > 0) {
-                $this->insertAdvertisement($ad, $crawler, $ad->getPosition(), $selector);
+            if ($crawler->filter('.ad-' . $ad->getPosition())->count() > 0) {
+                $htmlContent = $this->insertAdvertisement($ad, $htmlContent, $ad->getPosition(), $selector, $isForNeolane);
             } else {
-                $this->insertAdvertisement($ad, $crawler, $newsletterEntity->getNbPositions(), $selector);
+                $htmlContent = $this->insertAdvertisement($ad, $htmlContent, $newsletterEntity->getNbPositions(), $selector, $isForNeolane);
             }
         }
 
         if ($isForNeolane) {
-            $htmlContent = $this->insertTargetingConditions($crawler);
+            $htmlContent = $this->insertTargetingConditions($htmlContent);
 
             $this->s3->putObject(array(
                 'Bucket' => $this->bucket,
@@ -156,25 +152,47 @@ class AdvertisementsManager
                 'StorageClass' => 'STANDARD',
             ));
         }
-        else{
-            $htmlContent = $crawler->saveHTML();
-        }
-
-        return $htmlContent;
+        //@todo minify content here
+        return str_replace("\n", '', $htmlContent);
     }
 
     /**
      * @param $ad
-     * @param $crawler
+     * @param $htmlContent
      * @param $position
+     * @param $targetSelector
+     * @param $isForNeolane
+     * @return string
      */
-    public function insertAdvertisement($ad, $crawler, $position, $targetSelector)
+    public function insertAdvertisement($ad, $htmlContent, $position, $targetSelector, $isForNeolane)
     {
-        $crawler->filter($targetSelector . '.advertisement.ad-' . $position)->css('display', 'table');
+        $adContent = "
+            <table class=\"row advertisement hiddenAd ad-1 no-padding-left no-padding-right\" style=\"border-collapse: collapse;border-spacing: 0;display: table;padding: 0;padding-left: 0!important;padding-right: 0!important;position: relative;text-align: left;vertical-align: top;width: 100%;\">
+            <tbody style=\"padding-left:0!important;padding-right:0!important\"><tr style=\"padding:0;padding-left:0!important;padding-right:0!important;text-align:left;vertical-align:top\">
+            <th class=\"small-12 large-8 columns first last\" style=\"Margin:0 auto;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:0!important;padding-right:0!important;text-align:left;width:370.67px\">
+            <table style=\"border-collapse:collapse;border-spacing:0;padding:0;padding-left:0!important;padding-right:0!important;text-align:left;vertical-align:top;width:100%\">
+            <tbody><tr style=\"padding:0;padding-left:0!important;padding-right:0!important;text-align:left;vertical-align:top\">
+            <th style=\"Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;padding-left:0!important;padding-right:0!important;text-align:left\">
+            <a style=\"Margin:0;color:#2199e8;font-family:Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;padding-left:0!important;padding-right:0!important;text-align:left;text-decoration:none\" href=\"" . $ad->getRedirectURL() . "\">
+            <img alt=\"\" style=\"-ms-interpolation-mode:bicubic;border:none;clear:both;display:block;max-width:100%;outline:0;padding-left:0!important;padding-right:0!important;text-decoration:none;width:auto\" src=\"" . $ad->getImageLink() . "\">
+            </a></th></tr></tbody></table></th></tr></tbody></table>
+            ";
 
-        $crawler->filter($targetSelector . '.advertisement.ad-' . $position . ' a')
-            ->setAttribute('href', $ad->getRedirectURL());
-        $crawler->filter($targetSelector . '.advertisement.ad-' . $position . ' img')
-            ->setAttribute('src', $ad->getImageLink());
+        if ($isForNeolane) {
+            switch ($ad->getTarget()) {
+                case 'subscribers':
+                    $adContent = '<% if(targetData.abonne==\'1\'){ %>' . $adContent . '<% } %>';
+                    break;
+                case 'not_subscribers':
+                    $adContent = '<% if(targetData.abonne==\'2\'){ %>' . $adContent . '<% } %>';
+                    break;
+            }
+        }
+
+        return str_replace(
+            '<div class="ad-' . $position . '">',
+            '<div class="ad-' . $position . '">' . $adContent,
+            $htmlContent
+        );
     }
 }
