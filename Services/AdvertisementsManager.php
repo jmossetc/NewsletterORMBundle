@@ -70,7 +70,7 @@ class AdvertisementsManager
      */
     public function insertTargetingConditions(HtmlPageCrawler $crawler)
     {
-        $htmlContent = $crawler->saveHtml();
+        $htmlContent = $crawler->minify()->save();
 
         $htmlContent = str_replace(
             '<!-- IsSubscribedBegin -->',
