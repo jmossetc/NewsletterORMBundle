@@ -101,8 +101,8 @@ class AdvertisementsManager
         );
 
         $htmlContent = str_replace(
-            '<!-- insertMirrorPage -->',
-            '<%@ include view="bay_NewsAuto_Unsub_CrxAlert" %>;',
+            '<!-- insertFooter -->',
+            '<%@ include view="bay_NewsAuto_Unsub_CrxAlert" %>',
             $htmlContent
         );
 
