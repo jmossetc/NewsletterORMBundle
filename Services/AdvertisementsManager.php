@@ -175,8 +175,9 @@ class AdvertisementsManager
             "<table style=\"border-collapse:collapse;border-spacing:0;padding:0;padding-left:0!important;padding-right:0!important;text-align:left;vertical-align:top;width:100%\">" .
             "<tbody><tr style=\"padding:0;padding-left:0!important;padding-right:0!important;text-align:left;vertical-align:top\">" .
             "<th style=\"Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;padding-left:0!important;padding-right:0!important;text-align:left\">" .
+            "<p class=\"e-pub-surtitle\" style=\"Margin:0;Margin-bottom:10px;color:#adadad;font-family:Helvetica,Arial,sans-serif!important;font-size:11px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;text-transform:uppercase\">Publicité</p>" .
             "<a style=\"Margin:0;color:#2199e8;font-family:Helvetica,Arial,sans-serif;font-weight:400;line-height:1.3;margin:0;padding:0;padding-left:0!important;padding-right:0!important;text-align:left;text-decoration:none\" href=\"" . $ad->getRedirectURL() . "\">" .
-            "<img alt=\"\" style=\"-ms-interpolation-mode:bicubic;border:none;clear:both;display:block;max-width:100%;outline:0;padding-left:0!important;padding-right:0!important;text-decoration:none;width:auto\" src=\"" . $ad->getImageLink() . "\">".
+            "<img alt=\"\" style=\"-ms-interpolation-mode:bicubic;border:none;clear:both;display:block;max-width:100%;outline:0;padding-left:0!important;padding-right:0!important;text-decoration:none;width:auto\" src=\"" . $ad->getImageLink() . "\">" .
             "</a></th></tr></tbody></table></th></tr></tbody></table>";
 
         if ($isForNeolane) {
