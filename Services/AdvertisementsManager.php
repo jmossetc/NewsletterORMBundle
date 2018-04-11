@@ -138,7 +138,10 @@ class AdvertisementsManager
             if ($crawler->filter('.ad-' . $ad->getPosition())->count() > 0) {
                 $htmlContent = $this->insertAdvertisement($ad, $htmlContent, $ad->getPosition(), $isForNeolane);
             } else {
-                $htmlContent = $this->insertAdvertisement($ad, $htmlContent, $newsletterEntity->getNbPositions(), $isForNeolane);
+                $pos = $newsletterEntity->getNbPositions();
+                if ($newsletterEntity->getNewsletterType() == "urbi")
+                    $pos++;
+                $htmlContent = $this->insertAdvertisement($ad, $htmlContent, $pos, $isForNeolane);
             }
         }
 
