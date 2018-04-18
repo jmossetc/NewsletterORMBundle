@@ -45,6 +45,7 @@ class NewsletterRepository extends EntityRepository
      * @param $open4Id
      * @param $newsletterType
      * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getNewslettersFromOpen4Id($open4Id, $newsletterType)
     {
@@ -61,7 +62,7 @@ class NewsletterRepository extends EntityRepository
                 'id' => $open4Id
             ]);
 
-        return $query->getQuery()->getSingleResult();
+        return $query->getQuery()->getOneOrNullResult();
     }
 
     /**
