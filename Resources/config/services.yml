@@ -5,10 +5,16 @@ services:
     newsletterorm.admanager:
         class: Bayard\NewsletterORMBundle\Services\AdvertisementsManager
         arguments:
-            $em : '@doctrine.orm.entity_manager'
-            $version: 'latest'
-            $region: '%aws_s3_region%'
-            $key: '%aws_api_key%'
-            $secret: '%aws_api_secret_key%'
+            $em: '@doctrine.orm.entity_manager'
+            $s3: '@s3.client'
             $bucket: '%aws_s3_generic_form_bucket%'
             $newslettersLocation: '%aws_s3_newsletter_location%'
+    s3.client:
+        class: Aws\S3\S3Client
+        arguments:
+            -
+                version: 'latest'
+                region: '%aws_s3_region%'
+                credentials:
+                    key: '%aws_api_key%'
+                    secret: '%aws_api_secret_key%'

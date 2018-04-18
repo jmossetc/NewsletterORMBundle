@@ -61,7 +61,7 @@ class NewsletterRepository extends EntityRepository
                 'id' => $open4Id
             ]);
 
-        return $query->getQuery()->getResult();
+        return $query->getQuery()->getSingleResult();
     }
 
     /**

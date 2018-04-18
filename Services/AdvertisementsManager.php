@@ -16,8 +16,7 @@ use \Wa72\HtmlPageDom\HtmlPageCrawler;
 
 class AdvertisementsManager
 {
-    protected $s3;
-    protected $sqs;
+    private $s3;
     protected $bucket;
     protected $newslettersLocation;
     protected $entityManager;
@@ -34,32 +33,14 @@ class AdvertisementsManager
      */
     public function __construct(
         EntityManagerInterface $em,
-        $version,
-        $region,
-        $key,
-        $secret,
+        $s3,
         $bucket,
         $newslettersLocation
     ) {
         $this->entityManager = $em;
         $this->bucket = $bucket;
         $this->newslettersLocation = $newslettersLocation;
-        $this->s3 = new S3Client([
-            'version' => $version,
-            'region' => $region,
-            'credentials' => [
-                'key' => $key,
-                'secret' => $secret,
-            ],
-        ]);
-        $this->sqs = new SqsClient([
-            'version' => $version,
-            'region' => $region,
-            'credentials' => [
-                'key' => $key,
-                'secret' => $secret,
-            ],
-        ]);
+        $this->s3 = $s3;
     }
 
     /**
@@ -144,7 +125,7 @@ class AdvertisementsManager
                 $htmlContent = $this->insertAdvertisement($ad, $htmlContent, $pos, $isForNeolane);
             }
         }
-
+        //@todo minify html
         if ($isForNeolane) {
             $htmlContent = $this->insertTargetingConditions($htmlContent);
 
@@ -157,7 +138,6 @@ class AdvertisementsManager
                 'StorageClass' => 'STANDARD',
             ));
         }
-        //@todo minify content here
         return str_replace("\n", '', $htmlContent);
     }
 
