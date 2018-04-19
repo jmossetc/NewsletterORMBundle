@@ -108,7 +108,7 @@ class NewsletterRepository extends EntityRepository
             ->where('a.enabled = 1')
             ->setParameters([
                 'type' => $newsletter->getNewsletterType(),
-                'date' => $newsletter->getDispatchDate()
+                'date' => $newsletter->getDispatchDate()->setTime(0,0,0)
             ]);
 
         return $query->getQuery()->getResult();
