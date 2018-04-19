@@ -78,7 +78,7 @@ class Advertisement
 
     /**
      * @var
-     * @ORM\Column(name="redirect_url", type="string", length=255)
+     * @ORM\Column(name="redirect_url", type="text")
      */
     private $redirectURL;
 
