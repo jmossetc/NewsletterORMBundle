@@ -7,7 +7,7 @@ services:
         arguments:
             $em: '@doctrine.orm.entity_manager'
             $s3: '@s3.client'
-            $bucket: '%aws_s3_generic_form_bucket%'
+            $bucket: '%aws_s3_newsletters_bucket%'
             $newslettersLocation: '%aws_s3_newsletter_location%'
     s3.client:
         class: Aws\S3\S3Client
