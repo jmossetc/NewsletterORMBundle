@@ -28,46 +28,41 @@ class AdvertisementRepository extends EntityRepository
         $query = $qb->select('a')
             ->from('BayardNewsletterORMBundle:Advertisement', 'a');
         $now = new \DateTime();
-        $now->setTime(0,0,0);
+        $now->setTime(0, 0, 0);
         switch ($filter) {
             case 'past':
                 $query->innerJoin('a.dates', 'd', JOIN::ON)
                     ->leftJoin('a.newsletterTypes', 'nt')
                     ->where('d.endDate <= :now')
-                    ->setParameter('now', $now);
+                    ->setParameter('now', $now)
+                    ->addSelect('nt');;
                 break;
             case 'current':
                 $query->innerJoin('a.dates', 'd', JOIN::ON)
                     ->leftJoin('a.newsletterTypes', 'nt')
                     ->where('d.endDate >= :now')
-                    ->setParameter('now', $now);
+                    ->setParameter('now', $now)
+                    ->addSelect('nt');;
 
                 break;
             case 'urbi':
             case 'essentiel':
             case 'journal':
                 $query->leftJoin('a.dates', 'd')
-                    ->innerJoin('a.newsletterTypes', 'nt', Join::WITH, $qb->expr()->andX(
-                        $qb->expr()->eq('nt.name', ':type')
-                    ))
+                    ->leftJoin('a.newsletterTypes', 'nt')
+                    ->leftJoin('a.newsletterTypes', 'nt2')->addSelect('nt2')
+                    ->where($qb->expr()->eq('nt.name', ':type')                    )
                     ->setParameter('type', $filter);
                 break;
             case 'all':
             default:
                 $query->leftJoin('a.newsletterTypes', 'nt')
-                    ->leftJoin('a.dates', 'd');
+                    ->leftJoin('a.dates', 'd')
+                    ->addSelect('nt');
         }
 
 
-        $query->addSelect('nt')
-            ->addSelect('d');
-        /*
-        $query = $this->createQueryBuilder('advertisement')
-            ->leftJoin('advertisement.newsletterTypes', 'nt')
-            ->leftJoin('advertisement.dates', 'd')
-            ->addSelect('nt')
-            ->addSelect('d');
-        */
+        $query->addSelect('d');
 
         foreach ($sortArray as $sort) {
             $query->addOrderBy($sort['column'], $sort['order']);
