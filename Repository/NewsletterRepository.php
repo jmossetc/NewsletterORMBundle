@@ -42,6 +42,33 @@ class NewsletterRepository extends EntityRepository
     }
 
     /**
+     * @param $newsletterType
+     * @param \DateTime $date
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getNewsletterFromTypeAndDate($newsletterType, \DateTime $date)
+    {
+        $beginDate = new \DateTime($date->format("Y-m-d") . "00:00:00");
+        $endDate = new \DateTime($date->format("Y-m-d") . "23:59:59");
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $query = $qb->select('n')
+            ->from('BayardNewsletterORMBundle:Newsletter', 'n')
+            ->innerJoin('n.newsletterType', 'type', Join::WITH, $qb->expr()->andX(
+                $qb->expr()->eq('type.name', ':type')
+            ))
+            ->where('n.dispatchDate BETWEEN :begin AND :end')
+            ->setParameters([
+                'type' => $newsletterType,
+                'begin' => $beginDate,
+                'end' => $endDate
+            ]);
+        return $query->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * @param $open4Id
      * @param $newsletterType
      * @return mixed
@@ -108,7 +135,7 @@ class NewsletterRepository extends EntityRepository
             ->where('a.enabled = 1')
             ->setParameters([
                 'type' => $newsletter->getNewsletterType(),
-                'date' => $newsletter->getDispatchDate()->setTime(0,0,0)
+                'date' => $newsletter->getDispatchDate()->setTime(0, 0, 0)
             ]);
 
         return $query->getQuery()->getResult();
